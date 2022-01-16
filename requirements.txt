@@ -1,6 +1,5 @@
 pip==21.3.1
-htbuilder
+streamlit==0.84.0
+htbuilder==0.5.0
 spacy~=2.3.7
-collections
-html
 en-core-web-md~=2.3.1
