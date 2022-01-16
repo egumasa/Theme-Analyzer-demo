@@ -101,8 +101,8 @@ text = st.sidebar.text_area("",height = 400)
 rawresult = theme_markup_test(text, nlp, False, True)
 
 st.header("Theme Annotation", "theme_annotation")
-anno_container = st.container()
-anno_container.write(annotated_text(*rawresult[0]))
+
+st.write(annotated_text(*rawresult[0]))
 
 
 st.header("Theme analysis", "theme_analysis")
