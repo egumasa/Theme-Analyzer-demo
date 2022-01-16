@@ -1,5 +1,5 @@
 pip==21.3.1
-streamlit==0.84.0
+streamlit
 htbuilder==0.5.0
 spacy~=2.3.7
 st-annotated-text
