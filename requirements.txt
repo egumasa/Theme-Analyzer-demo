@@ -1,4 +1,5 @@
 htbuilder
-spacy
+spacy==2.3.7
 collections
 html
+en-core-web-md==2.3.1
