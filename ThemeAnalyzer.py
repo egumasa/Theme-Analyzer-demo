@@ -93,8 +93,8 @@ from os import path
 
 #
 import streamlit as st
-#from annotated_text import annotated_text
-from annotate_text import annotated_text
+from annotated_text import annotated_text
+#from annotate_text import annotated_text
 
 #Constructing SpaCy pipeline
 
