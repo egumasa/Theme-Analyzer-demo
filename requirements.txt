@@ -1,6 +1,6 @@
 pip==21.3.1
 htbuilder
-spacy==2.3.7
+spacy~=2.3.7
 collections
 html
-en-core-web-md==2.3.1
+en-core-web-md~=2.3.1
