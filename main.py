@@ -21,7 +21,7 @@ from ThemeAnalyzer import constituent_analysis, extract_theme, extract_theme_spa
 
 @st.cache(allow_output_mutation = True)
 def load_model(spacy_model):
-    nlp = spacy.load('en_core_web_md')
+    nlp = spacy.load('spacy-model/en_core_web_md/en_core_web_md-2.3.1')
     #srl_pipe = SRLComponent(nlp, spacy_model)
     #nlp.add_pipe(srl_pipe, name='srl', last=True)
     return (nlp)
