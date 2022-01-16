@@ -14,7 +14,6 @@ from annotate_text import annotated_text
 
 import pickle
 import spacy
-!python -m spacy download en_core_web_md
 from ThemeAnalyzer import constituent_analysis, extract_theme, extract_theme_span, annotate, theme_markup_test
 
 
