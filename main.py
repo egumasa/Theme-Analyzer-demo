@@ -97,10 +97,12 @@ colorfunctions = st.sidebar.checkbox('Color-code Theme functions')
 
 text = st.sidebar.text_area("",height = 400)
 
+
 rawresult = theme_markup_test(text, nlp, False, True)
 
 st.header("Theme Annotation", "theme_annotation")
-annotated_text(*rawresult[0])
+anno_container = st.container()
+anno_container.write(annotated_text(*rawresult[0]))
 
 
 st.header("Theme analysis", "theme_analysis")
