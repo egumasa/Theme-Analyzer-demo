@@ -73,7 +73,7 @@ from operator import itemgetter, attrgetter
 import re
 from setuptools import setup, find_packages
 
-import explacy
+#import explacy
 import spacy
 
 #import benepar
@@ -268,7 +268,8 @@ def test_interrogative(text, parse_print = True):
 	for sent in doc.sents:
 		if parse_print == True:
 			try:
-				explacy.print_parse_info(nlp, sent.text)
+				print(text)
+				#explacy.print_parse_info(nlp, sent.text)
 			except AssertionError:
 				print('parse error')
 		#print(sent)
@@ -293,7 +294,8 @@ def is_imparative(sent):
 	
 	if is_imparative and root[0].text.lower() in ['let']:
 		try:
-			explacy.print_parse_info(nlp, sent.text)
+			print(sent.text)
+			#explacy.print_parse_info(nlp, sent.text)
 		except AssertionError:
 			print('parse error')
 			print(sent)
@@ -687,7 +689,7 @@ def identify_specialtheme(token):
 
 def specialtheme_test(text):
 	doc = nlp(text)
-	explacy.print_parse_info(nlp, doc.text)
+	#explacy.print_parse_info(nlp, doc.text)
 
 	for token in doc:
 		if token.dep_ in ["ROOT", 'conj'] and token.pos_ in ["VERB", "AUX"]:
@@ -748,7 +750,8 @@ def constituent_analysis(doc, parse_print=False):
 		
 		if parse_print == True:
 			try:
-				explacy.print_parse_info(nlp, sent.text)
+				print(sent.text)
+				#explacy.print_parse_info(nlp, sent.text)
 			except AssertionError:
 				print('parse error')
 			finally:
@@ -1522,6 +1525,7 @@ def annotate(doc, spans, functions = True):
 						
 				else:
 					holder.append((" ".join(temp), function, '#faa'))
+					
 				holder.append(" ")
 				temp = []
 				
