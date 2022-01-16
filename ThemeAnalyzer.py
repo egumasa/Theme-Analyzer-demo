@@ -1524,7 +1524,7 @@ def annotate(doc, spans, functions = True):
 						holder.append((" ".join(temp), function, "#afa"))
 						
 				else:
-					holder.append((" ".join(temp), function, '#faa'))
+					holder.append((" ".join(temp), "Theme", '#faa'))
 					
 				holder.append(" ")
 				temp = []
