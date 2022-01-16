@@ -9,8 +9,8 @@ Created on Fri Jun 11 21:26:35 2021
 
 
 import streamlit as st
-#from annotated_text import annotated_text
-from annotate_text import annotated_text
+from annotated_text import annotated_text
+#from annotate_text import annotated_text
 
 import pickle
 import spacy
