@@ -7,41 +7,46 @@ Created on Fri Jun 11 21:26:35 2021
 
 """
 
-
 import streamlit as st
 from annotated_text import annotated_text
 #from annotate_text import annotated_text
 
+import re
+import pandas as pd
 import pickle
 import spacy
-from ThemeAnalyzer import constituent_analysis, extract_theme, extract_theme_span, annotate, theme_markup_test
+from ThemeAnalyzer import constituent_analysis, extract_theme, extract_theme_span, annotate, calc_measures, themeinfo_to_dict
 
 
 
 @st.cache(allow_output_mutation = True)
 def load_model(spacy_model):
-    nlp = spacy.load('spacy-model/en_core_web_md/en_core_web_md-2.3.1')
-    #srl_pipe = SRLComponent(nlp, spacy_model)
-    #nlp.add_pipe(srl_pipe, name='srl', last=True)
-    return (nlp)
+	nlp = spacy.load('spacy-model/en_core_web_md/en_core_web_md-2.3.1')
+	#srl_pipe = SRLComponent(nlp, spacy_model)
+	#nlp.add_pipe(srl_pipe, name='srl', last=True)
+	return (nlp)
 
 #Loading resources
-
+@st.cache(allow_output_mutation = True)
 def preprocess(text):
 	# spaces
 	text = text.strip()
-	while "-\n" in text:
-		text = text.replace("-\n", " ")
-	while "\n" in text:
-		text = text.replace("\n", " ")
-	while "\t" in text:
-		text = text.replace("\t", " ")
-	while "  " in text:
-		text = text.replace("  ", " ")
-	while ";" in text:
-		text = text.replace(";", ".")
-	while ":" in text:
-		text = text.replace(":", ".")
+	text = re.sub("\n+", "\n", text)
+	text = re.sub("(-\n)+", " ", text)
+	text = re.sub("\t+", " ", text)
+	text = re.sub("\s+", " ", text)
+	#text = text.replace(";", ".")
+	#text = text.replace(":", ".")
+	#while "-\n" in text:
+	#	text = text.replace("-\n", " ")
+	#while "\t" in text:
+	#	text = text.replace("\t", " ")
+	#while "  " in text:
+	#	text = text.replace("  ", " ")
+	#while ";" in text:
+	#	text = text.replace(";", ".")
+	#while ":" in text:
+	#	text = text.replace(":", ".")
 	return(text)
 	
 @st.cache(allow_output_mutation = True)
@@ -74,6 +79,7 @@ with open(resource + 'modal_adjuncts_flat_clean_20210715.txt', 'r') as f:
 
 
 def theme_markup_test(text, nlp, conll=False, save = True):
+	text = preprocess(text)
 	doc = nlp(text)
 	const1 = constituent_analysis(doc)
 	const1 = extract_theme(const1, doc, print_res=False)
@@ -105,5 +111,10 @@ st.header("Theme Annotation", "theme_annotation")
 st.write(annotated_text(*rawresult[0]))
 
 
-st.header("Theme analysis", "theme_analysis")
+st.header("Theme Analysis", "theme_analysis")
+df = pd.DataFrame.from_dict(themeinfo_to_dict(rawresult[1]), orient='index')
+st.dataframe(df)
+
+st.header("Detailed Grammatical Analysis", "details")
 st.write(rawresult[1])
+

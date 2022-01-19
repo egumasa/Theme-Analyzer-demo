@@ -113,18 +113,22 @@ def load_model(spacy_model):
 def preprocess(text):
 	# spaces
 	text = text.strip()
-	while "-\n" in text:
-		text = text.replace("-\n", " ")
-	while "\n" in text:
-		text = text.replace("\n", " ")
-	while "\t" in text:
-		text = text.replace("\t", " ")
-	while "  " in text:
-		text = text.replace("  ", " ")
-	while ";" in text:
-		text = text.replace(";", ".")
-	while ":" in text:
-		text = text.replace(":", ".")
+	text = re.sub("\n+", "\n", text)
+	text = re.sub("(-\n)+", " ", text)
+	text = re.sub("\t+", " ", text)
+	text = re.sub("\s+", " ", text)
+	text = text.replace(";", ".")
+	text = text.replace(":", ".")
+	#while "-\n" in text:
+	#	text = text.replace("-\n", " ")
+	#while "\t" in text:
+	#	text = text.replace("\t", " ")
+	#while "  " in text:
+	#	text = text.replace("  ", " ")
+	#while ";" in text:
+	#	text = text.replace(";", ".")
+	#while ":" in text:
+	#	text = text.replace(":", ".")
 	return(text)
 	
 @st.cache(allow_output_mutation = True)
@@ -1524,7 +1528,7 @@ def annotate(doc, spans, functions = True):
 						holder.append((" ".join(temp), function, "#afa"))
 						
 				else:
-					holder.append((" ".join(temp), function, '#faa'))
+					holder.append((" ".join(temp), "Theme", '#faa'))
 					
 				holder.append(" ")
 				temp = []
@@ -1540,6 +1544,8 @@ def annotate(doc, spans, functions = True):
 
 
 def theme_markup_test(text, conll=False, save = True):
+	text = preprocess(text)
+ 
 	doc = nlp(text)
 	const1 = constituent_analysis(doc)
 	const1 = extract_theme(const1, doc, print_res=False)
@@ -1548,3 +1554,97 @@ def theme_markup_test(text, conll=False, save = True):
 	anno_text = annotate(doc, theme_span)
 	
 	return anno_text
+
+def calc_measures(parsed_dict):
+	holder = []
+	for idx, mainverb in parsed_dict.items():
+		
+		if mainverb['theme'] == None:
+			res = {'clause_id': str(idx),
+			    'sent_len': str(len(mainverb['sentence'].split(" "))),
+			   'mood_type': "NA",
+			   'theme_type': "NA",
+			   'sub_type': "NA",
+			   'theme_length': str(0),
+			   'n_functions': str(0),
+			   'n_interpersonal': str(0),
+			   'n_textual': str(0)
+			   }
+		else:
+			functions = mainverb['theme']['functions']
+			res = {'clause_id': str(idx),
+				   'sent_len': str(len(mainverb['sentence'].split(" "))),
+				   'mood_type': mainverb['theme']['mood_type'],
+				   'theme_type': mainverb['theme']['theme_type'],
+				   'sub_type': mainverb['theme']['sub_type'],
+				   'theme_length': str(mainverb['theme']['lengths']),
+				   'n_functions': str(len(functions)),
+				   'n_interpersonal': str(len([w for w in functions if 'Interpersonal' in w])),
+				   'n_textual': str(len([w for w in functions if 'Textual' in w]))
+				   }
+		holder.append(res)
+	return holder
+
+
+def dict_to_tsv(const1, directory, file, preindex, themeindex_fixed, themeindex_iter, postindex ):
+	'''This functiion tsv file
+	'''
+	with open(directory + file.split("/")[-1] + '_theme_stats_0714.txt', "wt") as out_file:
+		
+		header = ['headid'] + preindex + themeindex_fixed + themeindex_iter + postindex
+		tsv_writer = csv.writer(out_file, delimiter='\t')
+		tsv_writer.writerow(header)
+
+		for headid, content in const1.items():
+			for idx, theme in enumerate(content['theme']['text']):
+			
+				holder = [str(headid)]
+				print(content['theme'])
+				for x in preindex:
+					holder.append(str(content[x]))
+				
+				for y in themeindex_fixed:
+					holder.append(str(content['theme'][y]))
+					
+				
+				for z in themeindex_iter:
+					
+					holder.append(str(content['theme'][z][idx]))
+						
+				for x in postindex:
+					holder.append(str(content[x]).strip())
+					
+				tsv_writer.writerow(holder)
+
+def themeinfo_to_dict(parsed_dict):
+	'''takes the filtered dictionary ; pass it onto tsv writer
+
+	'''
+	preindex = ['sentid','lexverb']
+	themeindex_fixed = ['lengths', 'theme_type', 'mood_type']
+	themeindex_iter = ['functions', 'roles']
+	postindex = ['sentence']
+	holder = {}
+	
+	for headid, content in parsed_dict.items():
+		
+		for idx, theme in enumerate(content['theme']['text']):
+			sentid = content['sentid']
+			holder["{}-{}".format(sentid, idx + 1)] = {"text": theme}
+   
+    
+			for y in themeindex_fixed:
+				holder["{}-{}".format(sentid, idx + 1)][y] = content['theme'][y]
+    
+			for z in themeindex_iter:
+				holder["{}-{}".format(sentid, idx + 1)][z] = content['theme'][z][idx]
+			for x in preindex:
+				holder["{}-{}".format(sentid, idx + 1)][x] = content[x]
+    
+			for x in postindex:
+				holder["{}-{}".format(sentid, idx + 1)][x] = str(content[x]).strip()
+    
+	return (holder)
+
+       
+
