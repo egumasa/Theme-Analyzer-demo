@@ -110,7 +110,8 @@ st.sidebar.title('Text to analyze')
 colorfunctions = st.sidebar.checkbox('Color-code Theme functions')
 
 text = st.sidebar.text_area("",height = 400)
-
+st.sidebar.caption("""\nTheme Analyzer is still in development. This demo is to demonstrate an automatic approach to Theme Analysis.\n
+                   """)
 
 rawresult = theme_markup_test(text, nlp, False, True)
 
