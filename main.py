@@ -97,15 +97,15 @@ spacy_model = 'en_core_web_md'
 nlp = load_model(spacy_model)
 
 st.title("Theme Analyzer—version 0.1 (beta)")
-with st.expander("See explanation"):
+
+with st.expander("See explanation", False):
      st.write("""
-         This is a demo version of Theme Analyzer. "Theme" as described in Systemic Functional Linguistics (Halliday & Matthiessen, 2014) is typically the first element(s) in a "clause", which serve(s) as a "point of departure" of the message.
-Effective choice of Theme is said to organize textual patterns, which may in turn help increase cohesion of the text. The current demo shows automatic approach to identify Theme and their grammatical realization details.
-Note that Theme Analyzer is still under development and its accuracy has only been tested on a small dataset of around 200 hand annotated sentences (although F1 of over .8).  
-Cite: Eguchi, M. (2021). Theme Analyzer demo. [Computer software]. 
-     """)
-'''
-'''
+        This is a demo version of Theme Analyzer. "Theme" as described in Systemic Functional Linguistics (Halliday & Matthiessen, 2014) is typically the first element(s) in a "clause", which serve(s) as a "point of departure" of the message.
+		Effective choice of Theme is said to organize textual patterns, which may in turn help increase cohesion of the text. Theme Analyzer is an automatic approach to identify Theme and their grammatical realization details.
+		Note that Theme Analyzer is still under development and its accuracy has only been tested on a small dataset of around 200 hand annotated sentences (although F1 of over .8).  
+		Cite: Eguchi, M. (2021). Theme Analyzer demo. [Computer software]. 
+     	""")
+
 st.sidebar.title('Text to analyze')
 colorfunctions = st.sidebar.checkbox('Color-code Theme functions')
 
