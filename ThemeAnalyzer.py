@@ -1630,7 +1630,7 @@ def themeinfo_to_dict(parsed_dict):
 		
 		for idx, theme in enumerate(content['theme']['text']):
 			sentid = content['sentid']
-			holder["{}-{}".format(sentid, idx + 1)] = {"text": theme}
+			holder["{}-{}".format(sentid, idx + 1)] = {"text": str(theme)}
    
     
 			for y in themeindex_fixed:
