@@ -780,7 +780,7 @@ def constituent_analysis(doc, parse_print=False):
 
 			# When token is not the root or the head of coordinated elements, skip them
 			# Enter constituency analysis if the token is ROOT or the head of coodinated elements
-			#Check if the token is mainverb.
+			# Check if the token is mainverb.
 			
 			_is_mainverb = token.dep_ in ["ROOT"] and token.pos_ in ["VERB", "AUX"]
 			_is_conjuncted_clause = token.dep_ in ["conj"] and token.head.dep_ in ["ROOT"] and token.pos_ in ["VERB", "AUX"]
@@ -1521,14 +1521,14 @@ def annotate(doc, spans, functions = True):
 			if len(temp) > 0:
 				if functions:
 					if function == "Topical":
-						holder.append((" ".join(temp), function, "#fea"))
+						holder.append((" ".join(temp), function, "#DBA901"))
 					elif function == "Interpersonal":
-						holder.append((" ".join(temp), function, '#faa'))
+						holder.append((" ".join(temp), function, '#FE642E'))
 					elif function == "Textual":
-						holder.append((" ".join(temp), function, "#afa"))
+						holder.append((" ".join(temp), function, "#04B431"))
 						
 				else:
-					holder.append((" ".join(temp), "Theme", '#faa'))
+					holder.append((" ".join(temp), "Theme", '#DBA901'))
 					
 				holder.append(" ")
 				temp = []

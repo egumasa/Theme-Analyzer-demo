@@ -21,7 +21,10 @@ from ThemeAnalyzer import constituent_analysis, extract_theme, extract_theme_spa
 
 @st.cache(allow_output_mutation = True)
 def load_model(spacy_model):
-	nlp = spacy.load('spacy-model/en_core_web_md/en_core_web_md-2.3.1')
+	if "3" in spacy.__version__:
+		nlp = spacy.load('en_core_web_trf')
+	else:
+		nlp = spacy.load('spacy-model/en_core_web_md/en_core_web_md-2.3.1')
 	#srl_pipe = SRLComponent(nlp, spacy_model)
 	#nlp.add_pipe(srl_pipe, name='srl', last=True)
 	return (nlp)
@@ -113,6 +116,7 @@ text = st.sidebar.text_area("",height = 400)
 st.sidebar.caption("""\nTheme Analyzer is still in development. This demo is to demonstrate an automatic approach to Theme Analysis.\n
                    """)
 st.sidebar.markdown("Theme Analyzer is developed by [Masaki Eguchi](https://masakieguchi.weebly.com).")
+
 
 rawresult = theme_markup_test(text, nlp, False, True)
 
