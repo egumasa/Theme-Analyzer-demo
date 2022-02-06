@@ -21,7 +21,7 @@ from ThemeAnalyzer import constituent_analysis, extract_theme, extract_theme_spa
 
 @st.cache(allow_output_mutation = True)
 def load_model(spacy_model):
-	if "3" in spacy.__version__:
+	if "3.2" in spacy.__version__:
 		nlp = spacy.load('en_core_web_trf')
 	else:
 		nlp = spacy.load('spacy-model/en_core_web_md/en_core_web_md-2.3.1')
