@@ -731,6 +731,31 @@ def coordinated_clause_category(v_token, mood_type):
 	
 	return(cl_status)
 
+def _is_tagq(sent):
+	left_ccomp = False
+	right_subj = False
+	
+	for t in sent:
+		if t.dep_ == "ROOT":
+			lefts = t.lefts
+			rights = t.rights
+
+			for left in lefts:
+				if left.dep_ == "ccomp":
+					left_ccomp = True
+			for right in rights:
+				if right.dep_ == "nsubj":
+					right_subj = True
+	if left_ccomp and right_subj:
+		return(True)
+	else:
+		return(False)
+
+ 
+
+
+ 
+
 def constituent_analysis(doc, parse_print=False):
 	'''Parses spacy Doc object and parse into constituencies
 
@@ -769,6 +794,7 @@ def constituent_analysis(doc, parse_print=False):
 
 		# mood_analysis_v2 uses dependency
 		mood_type, potential_theme = mood_analysis_v2(sent) # maybe incorporate imparative here?? 
+		_is_tag = _is_tagq(sent)
 
 		for token in sent:
 			# 1) T-unit detection, by locating main verbs
@@ -784,6 +810,7 @@ def constituent_analysis(doc, parse_print=False):
 			
 			_is_mainverb = token.dep_ in ["ROOT"] and token.pos_ in ["VERB", "AUX"]
 			_is_conjuncted_clause = token.dep_ in ["conj"] and token.head.dep_ in ["ROOT"] and token.pos_ in ["VERB", "AUX"]
+
 			
 			if _is_mainverb or _is_conjuncted_clause:
 				#print(sent)
